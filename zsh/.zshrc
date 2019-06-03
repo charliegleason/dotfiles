@@ -7,6 +7,8 @@ export SCREENDIR=~/.screen
 # start powerline daemon
 powerline-daemon -q
 
+# start ssh-agent
+eval $(ssh-agent -s) >> /dev/null
 
 # Path to your oh-my-zsh installation
 export ZSH="/home/charlie/.oh-my-zsh"
