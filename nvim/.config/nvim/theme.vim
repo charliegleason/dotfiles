@@ -1,7 +1,3 @@
-" To persistently change the theme, copy this file to a directory outside this
-" repository, modify the settings to your liking, and mount it at the same
-" location as this file.
-
 " 256 color support is assumed (such as in gnome-terminal). As long as the 
 " terminal supports 256 colors, this ensures colors look the same 
 " regardless of the terminal color scheme.

@@ -16,7 +16,6 @@ set tabstop=8
 set shiftwidth=4
 set expandtab
 
-let g:netrw_browse_split = 0
 
 " UI SETTINGS
 
@@ -26,11 +25,6 @@ filetype plugin indent on
 " Show line numbers
 " Use hybrid line numbering - current line is absolute, all others are relative
 set number relativenumber
-" augroup numbertoggle
-"     autocmd!
-"     autocmd BufEnter,FocusGained,InsertLeave * set relativenumber
-"     autocmd BufLeave,FocusLost,InsertEnter   * set norelativenumber
-" augroup END
 " Don't show line numbers in terminal windows
 augroup termnumber
     autocmd!
@@ -67,7 +61,6 @@ endif
 
 " Save undo history
 if has("persistent_undo")
-    "set undodir=$HOME."/.local/share/nvim/undo"
     set undofile
 endif
 
@@ -86,7 +79,6 @@ au FileType c,cpp,cuda,objc :call C_init()
 
 " Read additional configuration files
 exec 'source ' . stdpath('config') . '/mappings.vim'
-" exec 'source ' . stdpath('config') . '/netrw.vim'
+exec 'source ' . stdpath('config') . '/netrw.vim'
 exec 'source ' . stdpath('config') . '/theme.vim'
 exec 'source ' . stdpath('config') . '/external.vim'
-
