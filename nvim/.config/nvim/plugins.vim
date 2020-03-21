@@ -6,6 +6,7 @@ Plug 'vim-airline/vim-airline-themes'
 " (Neo)vim syntax themes
 Plug 'chriskempson/base16-vim'
 Plug 'sickill/vim-monokai'
+Plug 'neovimhaskell/haskell-vim'
 " Git wrapper
 Plug 'tpope/vim-fugitive'
 " Make netrw behave sensibly
@@ -32,20 +33,19 @@ Plug 'junegunn/fzf'
 " Universal-ctags based navigation
 Plug 'majutsushi/tagbar'
 
-" Plug 'supercollider/scvim'
+" SuperCollider
 Plug 'davidgranstrom/scnvim'
+" TidalCycles
 Plug 'tidalcycles/vim-tidal'
-
 call plug#end()
 
 
 " PLUGIN SETTINGS
+" see theme.vim for color settings
 
 " Airline
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tagbar#enabled = 1
-
-" see theme.vim for color settings
 
 " Deoplete
 let g:deoplete#enable_at_startup = 1
@@ -57,9 +57,9 @@ let g:LanguageClient_loggingFile = $HOME . "/.LanguageClient.log"
 let g:LanguageClient_serverCommands = {
             \ 'python': ['pyls'],
             \ 'sh': ['bash-language-server', 'start'],
-            \ 'c': ['ccls', '--log-file=/tmp/cc.log'],
-            \ 'cpp': ['ccls', '--log-file=/tmp/cc.log'],
-            \ 'cuda': ['ccls', '--log-file=/tmp/cc.log'],
+            \ 'c': ['clangd', '--header-insertion=never', '--limit-results=32'],
+            \ 'cpp': ['clangd', '--header-insertion=never', '--limit-results=32'],
+            \ 'cuda': ['clangd', '--header-insertion=never', '--limit-results=32'],
             \ }
 let g:LanguageClient_diagnosticsDisplay = {
             \   1: {
@@ -92,4 +92,14 @@ let g:LanguageClient_diagnosticsDisplay = {
             \     }
             \ }
 
+" vim-tidal
 let g:tidal_target = "terminal"
+
+" SCNvim
+let g:scnvim_postwin_orientation = 'h'
+" Disable all default key mappings (see ./mappings.vim)
+let g:scnvim_no_mappings = 1
+" Browse documentation within Neovim
+let g:scnvim_scdoc = 1
+" Set post window height
+let g:scnvim_postwin_size = 25

@@ -1,6 +1,10 @@
 " Open a terminal in a new split
-function! SplitTerminal()
+function! HSplitTerminal()
     new | terminal
+endfunction
+
+function! VSplitTerminal()
+    vnew | terminal
 endfunction
 
 " Open a terminal in a new tab
@@ -8,23 +12,23 @@ function! TabTerminal()
     tabnew | terminal
 endfunction
 
-" LanguageClient commands
-command! Format :call LanguageClient_textDocument_formatting()
-command! Gotodef :sp | call LanguageClient_textDocument_definition()
-command! Rename :call LanguageClient_textDocument_rename()
-command! Showdoc :call LanguageClient_textDocument_hover()
-
-" Commands for opening terminals
-command! Splitterminal :call SplitTerminal()
-command! Tabterminal :call TabTerminal()
-
 " Remove trailing whitespace in the current buffer
 function! RemoveTrailingWhitespace()
-    % substitute /\s\+$//g
+    silent! % substitute /\s\+$//g
 endfunction
 
-command! Rtrailing :call RemoveTrailingWhitespace()
+" Commands for opening terminals
+command! HSplitTerminal :call HSplitTerminal()
+command! VSplitTerminal :call VSplitTerminal()
+command! TabTerminal :call TabTerminal()
 
+command! RTrailing :call RemoveTrailingWhitespace()
+
+" LanguageClient commands
+command! Format :call LanguageClient_textDocument_formatting()
+command! GotoDef :sp | call LanguageClient_textDocument_definition()
+command! Rename :call LanguageClient_textDocument_rename()
+command! ShowDoc :call LanguageClient_textDocument_hover()
 
 " Set <leader>
 let mapleader = ","
@@ -39,39 +43,60 @@ tnoremap <M-j> <C-\><C-n><C-w>j
 tnoremap <M-k> <C-\><C-n><C-w>k
 tnoremap <M-l> <C-\><C-n><C-w>l
 
-" Use Alt-s and Alt-v to make horizontal and vertical splits, respectively
-nnoremap <M-s> <C-w>s
-nnoremap <M-v> <C-w>v
-" Use Alt-n to open a new (empty) horizontal split
-nnoremap <M-n> <C-w>n
-
-" Make Esc behave the same in terminal mode as in other modes
+" Make Esc behave the same way in terminal mode as in other modes
 tnoremap <Esc> <C-\><C-n>
 tnoremap <M-[> <Esc>
-tnoremap <C-v><Esc> <Esc>
+tnoremap <leader>e <Esc>
 
-" f for 'format', g for 'goto', r for 'replace', d for 'doc(umentation)'
-" Conveniently, 'rdfg' also makes the same shape as 'wasd' on a QWERTY keyboard
-nnoremap <leader>f :Format<CR>
-nnoremap <leader>g :Gotodef<CR>
-nnoremap <leader>r :Rename<CR>
-nnoremap <leader>d :Showdoc<CR>
+" <leader> mappings (generally) use mnemonics following a noun, verb (optional), adjective pattern
 
-" Key commands for opening terminals
-nnoremap <leader>st :Splitterminal<CR>
-nnoremap <leader>tt :Tabterminal<CR>
+" Split the current window vertically ([w]indow [v]ertical)
+nnoremap <leader>wv <C-w>s
+" Split the current window horizontally ([w]indow [h]orizontal)
+nnoremap <leader>wh <C-w>v
+" Maximize the current window ([w]indow [M]aximize)
+nnoremap <leader>wM <C-w>_
+" Minimize the current window ([w]indow [m]inimize)
+nnoremap <leader>wm <C-w>1_
+" Make all windows equal size ([w]indow [e]qual)
+nnoremap <leader>we <C-w>=
+" Move current window to new tab ([w]indow [t]ab)
+nnoremap <leader>wt <C-w>T
+" Close the current window ([w]indow [c]lose)
+nnoremap <leader>wc :quit<CR>
 
-" Remove trailing whitespace
-nnoremap <leader>tw :Rtrailing<CR>
+" Open a new terminal in a horizontal split ([t]erminal [h]orizontal)
+nnoremap <leader>th :HSplitTerminal<CR>
+" Open a new terminal in a vertical split ([t]erminal [v]ertical)
+nnoremap <leader>tv :VSplitTerminal<CR>
+" Open a new terminal in a new tab ([t]erminal [t]ab)
+nnoremap <leader>tt :TabTerminal<CR>
 
-" Open a new tab
+" Open a new tab ([t]ab [n]ew)
 nmap <leader>tn :tabnew<CR>
-" Close the current tab
+" Close the current tab ([t]ab [c]lose)
 nmap <leader>tc :tabclose<CR>
 " Alt-. to move 1 tab to the right
 nmap <M-.> gt
 " Alt-, to move 1 tab to the left
 nmap <M-,> gT
+
+" Yank to system clipboard
+nnoremap <leader>y "+y
+" Yank current line to system clipboard
+nnoremap <leader>yy "+yy
+" Yank entire buffer to system clipboard
+nnoremap <leader>Y :%y+<CR>
+
+" Remove trailing whitespace ([c]lear [w]hitespace)
+nnoremap <leader>cw :Rtrailing<CR>
+
+" f for 'format', g for 'goto', r for 'replace', d for 'doc(umentation)'
+" Conveniently, 'rdfg' also makes the same shape as 'wasd' on a QWERTY keyboard
+nnoremap <leader>f :Format<CR>
+nnoremap <leader>g :GotoDef<CR>
+nnoremap <leader>r :Rename<CR>
+nnoremap <leader>d :ShowDoc<CR>
 
 " Use Tab to cycle through completion options
 inoremap <expr><TAB> pumvisible() ? "\<C-n>" : "\<TAB>"
@@ -92,3 +117,30 @@ nnoremap <F7> :UndotreeToggle<CR>
 nnoremap <F8> :TagbarToggle<CR>
 " F12 to open netrw in a new vertical split on the left
 nnoremap <F12> :Lexplore<CR>
+
+" Automatically remove trailing whitespace on write/save
+augroup remove_trailing_whitespace
+    autocmd! remove_trailing_whitespace
+    autocmd BufWritePre * :call RemoveTrailingWhitespace()
+augroup END
+
+" Set keybindings for SuperCollider files
+augroup supercollider
+    autocmd! supercollider
+    let maplocalleader = "\\"
+    " Evaluate and [s]end (block)
+    autocmd FileType supercollider,help.supercollider nmap <buffer> <leader>s           <Plug>(scnvim-send-block)
+    " Evaluate and [s]end (line)
+    autocmd FileType supercollider,help.supercollider  nmap <buffer> <leader><C-s>      <Plug>(scnvim-send-line)
+    " Evaluate and [s]end (selection)
+    autocmd FileType supercollider,help.supercollider vmap <buffer> <leader>s           <Plug>(scnvim-send-selection)
+    " [S]top evaluation
+    autocmd FileType supercollider,help.supercollider nmap <buffer> <leader>S           <Plug>(scnvim-hard-stop)
+
+    " Toggle post [w]indow
+    autocmd FileType supercollider,help.supercollider nmap <buffer> <localleader>w      <Plug>(scnvim-postwindow-toggle)
+    " [s]tart sclang
+    autocmd FileType supercollider,help.supercollider nmap <buffer> <localleader>s      :SCNvimStart<CR>
+    " [S]top sclang
+    autocmd FileType supercollider,help.supercollider nmap <buffer> <localleader>S      :SCNvimStop<CR>
+augroup END

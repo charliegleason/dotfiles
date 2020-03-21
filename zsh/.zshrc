@@ -2,13 +2,13 @@
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
 # Path to your oh-my-zsh installation.
-ZSH=/usr/share/oh-my-zsh/
+ZSH=$HOME/.oh-my-zsh/
 
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
 # See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
-ZSH_THEME="robbyrussell"
+ZSH_THEME="agnoster"
 
 # Set list of themes to pick from when loading at random
 # Setting this variable when ZSH_THEME=random will cause zsh to load
@@ -68,7 +68,7 @@ COMPLETION_WAITING_DOTS="true"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(zsh-completions zsh-syntax-highlighting zsh-autosuggestions git colored-man-pages)
+plugins=(zsh-syntax-highlighting zsh-completions zsh-autosuggestions git colorize colored-man-pages vi-mode)
 
 
 # User configuration
@@ -103,6 +103,7 @@ if [[ ! -d $ZSH_CACHE_DIR ]]; then
 fi
 
 source $ZSH/oh-my-zsh.sh
+# end oh-my-zsh config
 
 # Base16 Shell
 BASE16_SHELL="$HOME/.config/base16-shell/"
@@ -110,6 +111,13 @@ BASE16_SHELL="$HOME/.config/base16-shell/"
     [ -s "$BASE16_SHELL/profile_helper.sh" ] && \
         eval "$("$BASE16_SHELL/profile_helper.sh")"
 
+# Enable vi mode
+# bindkey -v
+# Set mode switch timeout to 0.1 seconds
+export KEYTIMEOUT=1
+
 export EDITOR=/usr/bin/nvim
-export XDG_DATA_HOME=$HOME/.local/share
-export DISPLAY=localhost:0.0
+# Needed for nvim
+export XDG_DATA_HOME="${HOME}/.local/share"
+# NOTE: This is likely to be different between machines
+export DISPLAY=:1
