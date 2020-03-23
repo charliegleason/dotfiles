@@ -22,8 +22,8 @@ highlight! link SCNvimEval Visual
 
 " Airline settings
 " Enter :AirlineTheme and press <TAB> to see a list of all the themes
+" let g:airline_theme="base16_monokai"
 let g:airline_theme="base16_monokai"
-" let g:airline_theme="base16"
 
 " Set to 1 to use fancy Powerline symbols (requires a font supporting
 " Powerline symbols)

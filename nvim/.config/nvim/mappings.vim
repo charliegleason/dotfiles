@@ -51,9 +51,9 @@ tnoremap <leader>e <Esc>
 " <leader> mappings (generally) use mnemonics following a noun, verb (optional), adjective pattern
 
 " Split the current window vertically ([w]indow [v]ertical)
-nnoremap <leader>wv <C-w>s
+nnoremap <leader>wv <C-w>v
 " Split the current window horizontally ([w]indow [h]orizontal)
-nnoremap <leader>wh <C-w>v
+nnoremap <leader>wh <C-w>s
 " Maximize the current window ([w]indow [M]aximize)
 nnoremap <leader>wM <C-w>_
 " Minimize the current window ([w]indow [m]inimize)
@@ -143,4 +143,6 @@ augroup supercollider
     autocmd FileType supercollider,help.supercollider nmap <buffer> <localleader>s      :SCNvimStart<CR>
     " [S]top sclang
     autocmd FileType supercollider,help.supercollider nmap <buffer> <localleader>S      :SCNvimStop<CR>
+
+    autocmd FileType help.supercollider setlocal nonumber norelativenumber
 augroup END
