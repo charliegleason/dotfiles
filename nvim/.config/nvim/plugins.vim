@@ -5,8 +5,8 @@ Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 " (Neo)vim syntax themes
 Plug 'chriskempson/base16-vim'
-Plug 'sickill/vim-monokai'
 Plug 'neovimhaskell/haskell-vim'
+Plug 'cseelus/vim-colors-lucid'
 " Git wrapper
 Plug 'tpope/vim-fugitive'
 " Make netrw behave sensibly
@@ -37,6 +37,9 @@ Plug 'majutsushi/tagbar'
 Plug 'davidgranstrom/scnvim'
 " TidalCycles
 Plug 'tidalcycles/vim-tidal'
+
+" fetlang
+Plug 'kutsan/vim-fetlang'
 call plug#end()
 
 

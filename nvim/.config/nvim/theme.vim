@@ -11,6 +11,7 @@ set termguicolors
 set background=dark
 silent! colorscheme base16-monokai
 " silent! colorscheme base16-materia
+" silent! colorscheme monokai
 
 " Signature settings (show mark locations in symbol column)
 " Show marks using the SignColumn highlight group
