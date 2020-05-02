@@ -17,7 +17,7 @@ ZSH_THEME="agnoster"
 # ZSH_THEME_RANDOM_CANDIDATES=( "robbyrussell" "agnoster" )
 
 # Uncomment the following line to use case-sensitive completion.
-# CASE_SENSITIVE="true"
+CASE_SENSITIVE="true"
 
 # Uncomment the following line to use hyphen-insensitive completion.
 # Case-sensitive completion must be off. _ and - will be interchangeable.
@@ -68,7 +68,7 @@ COMPLETION_WAITING_DOTS="true"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(zsh-syntax-highlighting zsh-completions zsh-autosuggestions git colorize colored-man-pages vi-mode)
+plugins=(zsh-syntax-highlighting zsh-completions git colorize colored-man-pages vi-mode)
 
 
 # User configuration
@@ -120,4 +120,4 @@ export EDITOR=/usr/bin/nvim
 # Needed for nvim
 export XDG_DATA_HOME="${HOME}/.local/share"
 # NOTE: This is likely to be different between machines
-export DISPLAY=:1
+#export DISPLAY=:1
