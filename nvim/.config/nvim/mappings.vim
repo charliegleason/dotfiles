@@ -61,7 +61,8 @@ nnoremap <leader>wm <C-w>1_
 " Make all windows equal size ([w]indow [e]qual)
 nnoremap <leader>we <C-w>=
 " Move current window to new tab ([w]indow [t]ab)
-nnoremap <leader>wt <C-w>T
+" (note: <leader>wt conflicts with vimwiki)
+nnoremap <leader>wT <C-w>T
 " Close the current window ([w]indow [c]lose)
 nnoremap <leader>wc :quit<CR>
 

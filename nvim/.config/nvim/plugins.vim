@@ -33,13 +33,16 @@ Plug 'junegunn/fzf'
 " Universal-ctags based navigation
 Plug 'majutsushi/tagbar'
 
+" Wiki
+Plug 'vimwiki/vimwiki'
+
 " SuperCollider
 Plug 'davidgranstrom/scnvim'
 " TidalCycles
 Plug 'tidalcycles/vim-tidal'
 
 " fetlang
-Plug 'kutsan/vim-fetlang'
+" Plug 'kutsan/vim-fetlang'
 call plug#end()
 
 
