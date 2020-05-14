@@ -18,11 +18,16 @@
 " Language:	supercollider
 " Maintainer: Stephen Lumenta <stephen.lumenta@gmail.com>
 " Version:	0.2
-" Last change:	2012-03-31
+" Modified:	2012-03-31
 "
 " Maintainer: David Granström <info@davidgranstrom.com>
 " Version:	0.3
 " Modified:	2018-01-06
+"
+"
+" Maintainer: Charlie Gleason <cgleasoniv@gmaill.com>
+" Version:	0.4
+" Modified:	2020-05-03
 
 if exists("b:current_syntax")
   finish
@@ -38,7 +43,7 @@ syn keyword scError             Error DeprecatedError MethodError DoesNotUnderst
 
 " Keywords
 syn keyword scControl           case begin do forBy loop if while else try break rescue return
-syn keyword scReserved          super this thisFunction thisThread yield var classvar const arg
+syn keyword scReserved          super this thisFunction thisMethod thisThread yield var classvar const arg
 
 " Global variable
 syn match scGlobalVar           "\~\l\i*"
@@ -46,17 +51,17 @@ syn match scGlobalVar           "\~\l\i*"
 " Symbols
 syn region scSymbol             start=+'+ skip=+\\\\\|\\'+ end=+'+
 " syn match scSymbol              "\v(\w|\\)@<!\'.{-}(\\)@<!\'"
-syn match scSymbol              "\v\$@<!\\\w\w*"
+syn match scSymbol              "\v\$@<!\\\i\i*"
 syn match scSymbol              "\\\\"
+syn match scSymbol              "\l\i*\ze:"
 
 " Strings
 syn region scString             start=+"+ skip=+\\\\\|\\"+ end=+"+      contains=scEscapedChar
 syn match scEscapedChar         +\\"\|\\t\|\\n\|\\l\|\\r\|\\\\\(%\)\=+  contained
 syn match scChar	        "\$\\\?."
 
-
 " Built-in values
-syn keyword scBuiltIn           inf true false nil
+syn keyword scBuiltIn           true false nil
 " Other (special) syntax elements (e.g. partial application)
 syn keyword scSpecial           _
 
@@ -64,8 +69,11 @@ syn keyword scSpecial           _
 " syn match scFloat               "\<\d\+\.\d+\(e\(-\|+\)\=\d\+\)\="
 " syn match scInteger             "[^.]\<\zs\d\+"
 
+
+syn match scArrayExpansion      "\.\."
+
 " Binary operator adverbs
-syn match scBinaryOpAdverb      "[+-\*/=&|<>?@^]\{1,3}\.\zs\(s\|f\|t\|x\|\d\+\)"
+syn match scBinaryOpAdverb      "[+-\*/=&|<>?@^]\{1,2}[^.]\.\zs\(s\|f\|t\|x\|\d\+\)"
 
 " Hexadecimal integer
 syn match scNumber              "\%(\%(\w\|[]})\"']\s*\)\@<!-\)\=\<0[xX]\x\+\%(_\x\+\)*\>"                              display
@@ -78,29 +86,36 @@ syn match scNumber              "\%(\%(\w\|[]})\"']\s*\)\@<!-\)\=\<0[bB][01]\+\%
 " Decimal floating point number
 syn match scNumber	        "\%(\%(\w\|[]})\"']\s*\)\@<!-\)\=\<\%(0\|[1-9]\d*\%(_\d\+\)*\)\.\d\+\%(_\d\+\)*\>"      display
 syn match scNumber	        "\%(\%(\w\|[]})\"']\s*\)\@<!-\)\=\<\%(0\|[1-9]\d*\%(_\d\+\)*\)\%(\.\d\+\%(_\d\+\)*\)\=\%([eE][-+]\=\d\+\%(_\d\+\)*\)\>"	display
+" Match (2)pi as a number
+syn match scNumber              "\<2\=pi\>"
+syn keyword scNumber            inf
 
 
-" TODO: match pi as part of int and float
-" syn match scNumber              "pi"
 " Class name
 syn match scClass               "\<\u\i\+"
 " Class method definition
-syn match scClassMethodDef      "^\s*\*\zs\l\i*\ze\s*{"
+" syn match scClassMethodDef      "^\s*\*\zs\l\i*\ze\s*{"
 " Method definition
-syn match scMethodDef           "^\s*\zs\l\i*\ze\s*{"
+" syn match scMethodDef           "^\s*\zs\l\i*\ze\s*{"
 " Operator method definition
-syn match scMethodDef           "^\s*\zs[+-\*/=&|<>?@]\{1,3}\ze\s*{"
-" Function definition
-syn match scFunctionDef         "^\s*\(var\s\+\)\=\zs\i\+\ze\s*=\s*{"
-" Function/method keyword argument (such as 'doneAction:')
-syn match scKeywordArg          ",\s\+\zs\i\+:"
+" syn match scMethodDef           "^\s*\zs[+-\*/=&|<>?@]\{1,3}\ze\s*{\_.*};"
+"
+" Block operator syntax and method definition
+syn match scMethodBlock          "\<\l\i*\ze\s*{"
+
+
 " Class method call (receiver notation)
 syn match scMethodReceiver      "[^.]\=\.\zs\l\i\+\ze"
+
 " Class method call (binary operator notation)
-syn match scMethodBinaryOp      "[^,]\s*\zs\i\+\ze:"
+"syn match scMethodBinaryOp      "\([^(]\s*\|[^,]\s+\)\zs\l\i*\ze:"
+
+" Function/method keyword argument (such as 'doneAction:')
+" syn match scKeywordArg          "\((\_s*\|,\_s\+\)\zs\l\i*\ze:"
+
 
 " Comments
-syn keyword scTodo              TODO FIXME XXX TBD      contained
+syn keyword scTodo              TODO FIXME XXX TBD NOTE contained
 syn match   scComment           "\/\/.*"                contains=@Spell,scTodo
 syn region  scComment	        start="/\*"  end="\*/"  contains=@Spell,scTodo
 
@@ -109,8 +124,9 @@ syn region  scComment	        start="/\*"  end="\*/"  contains=@Spell,scTodo
 hi def link scReserved          Keyword
 hi def link scControl           Keyword
 hi def link scError             Exception
-hi def link scGlobalVar         Label
+hi def link scGlobalVar         String
 hi def link scBuiltIn           Special
+" Special syntax elements (e.g. nil, partial application)
 hi def link scSpecial           Special
 
 " Classes, methods, and functions
@@ -119,18 +135,19 @@ hi def link scClassDef          Identifier
 hi def link scClassMethodDef    Function
 hi def link scMethodDef         Function
 hi def link scFunctionDef       Function
+hi def link scMethodBlock       Function
 hi def link scMethodReceiver    Function
 hi def link scMethodBinaryOp    Function
 hi def link scFunction          Function
 hi def link scBinaryOpAdverb    Function
 
 " Symbols
-hi def link scKeywordArg        Label
-hi def link scSymbol            Label
+hi def link scKeywordArg        String
+hi def link scSymbol            String
 
 " Strings
-hi def link scString            String
-hi def link scChar              String
+hi def link scString            Label
+hi def link scChar              Label
 hi def link scEscapedChar       SpecialChar
 
 " Numbers
@@ -140,6 +157,5 @@ hi def link scNumber            Number
 hi def link scComment           Comment
 hi def link scTodo	        Todo
 
-" Special syntax elements (e.g. nil, partial application)
 
 let b:current_syntax = "supercollider"

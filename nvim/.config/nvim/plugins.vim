@@ -7,6 +7,7 @@ Plug 'vim-airline/vim-airline-themes'
 Plug 'chriskempson/base16-vim'
 Plug 'neovimhaskell/haskell-vim'
 Plug 'cseelus/vim-colors-lucid'
+Plug 'reedes/vim-pencil'
 " Git wrapper
 Plug 'tpope/vim-fugitive'
 " Make netrw behave sensibly
@@ -15,6 +16,8 @@ Plug 'tpope/vim-vinegar'
 Plug 'tpope/vim-surround'
 " Show marks in symbols column
 Plug 'kshenoy/vim-signature'
+" Show git diff in the sign column
+Plug 'airblade/vim-gitgutter'
 " Undo tree visualizer
 Plug 'mbbill/undotree'
 
@@ -28,17 +31,24 @@ Plug 'autozimu/LanguageClient-neovim', {
 
 " ctags-based completion for deoplete
 Plug 'deoplete-plugins/deoplete-tag'
-" Fuzzy search
-Plug 'junegunn/fzf'
+" Snippet support
+Plug 'SirVer/ultisnips'
 " Universal-ctags based navigation
 Plug 'majutsushi/tagbar'
-
 " Wiki
 Plug 'vimwiki/vimwiki'
+" Markdown
+Plug 'plasticboy/vim-markdown'
+" Fuzzy search
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+" Reduced distractions
+Plug 'junegunn/goyo.vim'
+" Focus current paragraph
+Plug 'junegunn/limelight.vim'
 
-" SuperCollider
+" SuperCollider integration
 Plug 'davidgranstrom/scnvim'
-" TidalCycles
+" TidalCycles integration
 Plug 'tidalcycles/vim-tidal'
 
 " fetlang
@@ -55,6 +65,13 @@ let g:airline#extensions#tagbar#enabled = 1
 
 " Deoplete
 let g:deoplete#enable_at_startup = 1
+
+" Ultisnips
+let g:UltiSnipsExpandTrigger="<leader><CR>"
+let g:UltiSnipsJumpForwardTrigger="<leader><tab>"
+let g:UltiSnipsJumpBackwardTrigger="<leader><c-tab>"
+let g:UltiSnipsEditSplit="vertical"
+let g:UltiSnipsSnippetDirectories = ['UltiSnips', 'scnvim-data']
 
 " LanguageClient-neovim
 let g:LanguageClient_loadSettings = 1
@@ -98,6 +115,9 @@ let g:LanguageClient_diagnosticsDisplay = {
             \     }
             \ }
 
+" Goyo (distraction-free mode)
+let g:goyo_width = 100
+
 " vim-tidal
 let g:tidal_target = "terminal"
 
@@ -109,3 +129,6 @@ let g:scnvim_no_mappings = 1
 let g:scnvim_scdoc = 1
 " Set post window height
 let g:scnvim_postwin_size = 25
+" Show echoargs
+let g:scnvim_echo_args = 1
+

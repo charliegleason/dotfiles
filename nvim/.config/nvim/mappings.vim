@@ -66,12 +66,12 @@ nnoremap <leader>wT <C-w>T
 " Close the current window ([w]indow [c]lose)
 nnoremap <leader>wc :quit<CR>
 
-" Open a new terminal in a horizontal split ([t]erminal [h]orizontal)
-nnoremap <leader>th :HSplitTerminal<CR>
-" Open a new terminal in a vertical split ([t]erminal [v]ertical)
-nnoremap <leader>tv :VSplitTerminal<CR>
-" Open a new terminal in a new tab ([t]erminal [t]ab)
-nnoremap <leader>tt :TabTerminal<CR>
+" Open a new terminal in a horizontal split ([s]plit [t]erminal [h]orizontal)
+nnoremap <leader>tsh :HSplitTerminal<CR>
+" Open a new terminal in a vertical split ([s]plit [t]erminal [v]ertical)
+nnoremap <leader>tsv :VSplitTerminal<CR>
+" Open a new terminal in a new tab ([t]erminal [t]ab [n]ew)
+nnoremap <leader>ttn :TabTerminal<CR>
 
 " Open a new tab ([t]ab [n]ew)
 nmap <leader>tn :tabnew<CR>
@@ -125,21 +125,29 @@ augroup remove_trailing_whitespace
     autocmd BufWritePre * :call RemoveTrailingWhitespace()
 augroup END
 
+nmap <Leader>l <Plug>(Limelight)
+xmap <Leader>l <Plug>(Limelight)
+
 " Set keybindings for SuperCollider files
 augroup supercollider
     autocmd! supercollider
     let maplocalleader = "\\"
-    " Evaluate and [s]end (block)
-    autocmd FileType supercollider,help.supercollider nmap <buffer> <leader>s           <Plug>(scnvim-send-block)
-    " Evaluate and [s]end (line)
-    autocmd FileType supercollider,help.supercollider  nmap <buffer> <leader><C-s>      <Plug>(scnvim-send-line)
-    " Evaluate and [s]end (selection)
-    autocmd FileType supercollider,help.supercollider vmap <buffer> <leader>s           <Plug>(scnvim-send-selection)
-    " [S]top evaluation
-    autocmd FileType supercollider,help.supercollider nmap <buffer> <leader>S           <Plug>(scnvim-hard-stop)
 
-    " Toggle post [w]indow
-    autocmd FileType supercollider,help.supercollider nmap <buffer> <localleader>w      <Plug>(scnvim-postwindow-toggle)
+    autocmd! User GoyoEnter Limelight
+    autocmd! User GoyoLeave Limelight!
+    " [e]valuate and send (block)
+    autocmd FileType supercollider,help.supercollider nmap <buffer> <leader>e           <Plug>(scnvim-send-block)
+    " [e]valuate and send (line)
+    autocmd FileType supercollider,help.supercollider nmap <buffer> <leader><C-e>       <Plug>(scnvim-send-line)
+    " [e]valuate and send (selection)
+    autocmd FileType supercollider,help.supercollider vmap <buffer> <leader>e           <Plug>(scnvim-send-selection)
+    " Stop [E]valuation
+    autocmd FileType supercollider,help.supercollider nmap <buffer> <leader>E           <Plug>(scnvim-hard-stop)
+    " [h]elp command shortcut
+    autocmd FileType supercollider,help.supercollider nmap <buffer> <leader>h           :SCNvimHelp
+
+    " Toggle [p]ost window
+    autocmd FileType supercollider,help.supercollider nmap <buffer> <localleader>pw     <Plug>(scnvim-postwindow-toggle)
     " [s]tart sclang
     autocmd FileType supercollider,help.supercollider nmap <buffer> <localleader>s      :SCNvimStart<CR>
     " [S]top sclang

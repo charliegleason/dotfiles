@@ -30,6 +30,8 @@ augroup termnumber
     autocmd!
     autocmd TermOpen,TermEnter * setlocal nonumber norelativenumber
 augroup END
+" Always show the sign column
+set signcolumn=yes
 " Hide the default mode text (e.g. -- INSERT -- below the statusline)
 set noshowmode
 " Show (partial) command in status line.
@@ -53,6 +55,8 @@ set splitright
 set mouse=a
 " Don't make all windows the same size after splitting or closing a window
 set noequalalways
+" Hide certain characters unless cursor is on top (mainly applies to Markdown)
+set conceallevel=2
 
 " Jump to the last position when reopening a file
 if has("autocmd")
