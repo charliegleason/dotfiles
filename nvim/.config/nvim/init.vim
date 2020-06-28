@@ -28,10 +28,10 @@ set number relativenumber
 " Don't show line numbers in terminal windows
 augroup termnumber
     autocmd!
-    autocmd TermOpen,TermEnter * setlocal nonumber norelativenumber
+    autocmd TermOpen,TermEnter * setlocal nonumber norelativenumber signcolumn=auto
 augroup END
 " Always show the sign column
-set signcolumn=yes
+set signcolumn=auto
 " Hide the default mode text (e.g. -- INSERT -- below the statusline)
 set noshowmode
 " Show (partial) command in status line.
@@ -80,6 +80,10 @@ function! C_init()
 endf
 " Call C_init() when editing C-family source code
 au FileType c,cpp,cuda,objc :call C_init()
+
+" Don't indicate curly brackets within parentheses as an error
+" (e.g. when providing a lambda as an argument)
+let c_no_curly_error = 1
 
 " Read additional configuration files
 exec 'source ' . stdpath('config') . '/mappings.vim'

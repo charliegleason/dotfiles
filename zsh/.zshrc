@@ -24,7 +24,7 @@ CASE_SENSITIVE="true"
 # HYPHEN_INSENSITIVE="true"
 
 # Uncomment the following line to disable bi-weekly auto-update checks.
-DISABLE_AUTO_UPDATE="true"
+# DISABLE_AUTO_UPDATE="true"
 
 # Uncomment the following line to automatically update without prompting.
 # DISABLE_UPDATE_PROMPT="true"
@@ -119,5 +119,5 @@ export KEYTIMEOUT=1
 export EDITOR=/usr/bin/nvim
 # Needed for nvim
 export XDG_DATA_HOME="${HOME}/.local/share"
-# NOTE: This is likely to be different between machines
-#export DISPLAY=:1
+# export TERM=st-256color
+# export TERM=st-256color

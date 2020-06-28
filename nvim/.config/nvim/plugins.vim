@@ -7,7 +7,12 @@ Plug 'vim-airline/vim-airline-themes'
 Plug 'chriskempson/base16-vim'
 Plug 'neovimhaskell/haskell-vim'
 Plug 'cseelus/vim-colors-lucid'
-Plug 'reedes/vim-pencil'
+Plug 'morhetz/gruvbox'
+Plug 'jcherven/jummidark.vim'
+Plug 'andreypopp/vim-colors-plain'
+Plug 'reedes/vim-colors-pencil'
+Plug 'ewilazarus/preto'
+" Plug 'reedes/vim-pencil'
 " Git wrapper
 Plug 'tpope/vim-fugitive'
 " Make netrw behave sensibly
@@ -45,6 +50,8 @@ Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/goyo.vim'
 " Focus current paragraph
 Plug 'junegunn/limelight.vim'
+" Display contents of registers
+Plug 'junegunn/vim-peekaboo'
 
 " SuperCollider integration
 Plug 'davidgranstrom/scnvim'

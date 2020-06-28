@@ -43,10 +43,11 @@ syn keyword scError             Error DeprecatedError MethodError DoesNotUnderst
 
 " Keywords
 syn keyword scControl           case begin do forBy loop if while else try break rescue return
-syn keyword scReserved          super this thisFunction thisMethod thisThread yield var classvar const arg
+syn keyword scReserved          super this thisFunction thisMethod thisThread thisProcess currentEnvironment
+                              \ yield var classvar const arg
 
 " Global variable
-syn match scGlobalVar           "\~\l\i*"
+syn match scEnvVar              "\~\i*"
 
 " Symbols
 syn region scSymbol             start=+'+ skip=+\\\\\|\\'+ end=+'+
@@ -60,20 +61,21 @@ syn region scString             start=+"+ skip=+\\\\\|\\"+ end=+"+      contains
 syn match scEscapedChar         +\\"\|\\t\|\\n\|\\l\|\\r\|\\\\\(%\)\=+  contained
 syn match scChar	        "\$\\\?."
 
+
 " Built-in values
 syn keyword scBuiltIn           true false nil
 " Other (special) syntax elements (e.g. partial application)
-syn keyword scSpecial           _
+" syn keyword scSpecial           _
 
 " TODO: simplify number regexes, if possible
 " syn match scFloat               "\<\d\+\.\d+\(e\(-\|+\)\=\d\+\)\="
 " syn match scInteger             "[^.]\<\zs\d\+"
 
-
 syn match scArrayExpansion      "\.\."
+syn match scEllipsis            "\.\.\."
 
 " Binary operator adverbs
-syn match scBinaryOpAdverb      "[+-\*/=&|<>?@^]\{1,2}[^.]\.\zs\(s\|f\|t\|x\|\d\+\)"
+" syn match scBinaryOpAdverb      "[+-\*/=&|<>?@^]\{1,2}[^.]\.\zs\(s\|f\|t\|x\|\d\+\)"
 
 " Hexadecimal integer
 syn match scNumber              "\%(\%(\w\|[]})\"']\s*\)\@<!-\)\=\<0[xX]\x\+\%(_\x\+\)*\>"                              display
@@ -90,22 +92,31 @@ syn match scNumber	        "\%(\%(\w\|[]})\"']\s*\)\@<!-\)\=\<\%(0\|[1-9]\d*\%(_
 syn match scNumber              "\<2\=pi\>"
 syn keyword scNumber            inf
 
-
 " Class name
 syn match scClass               "\<\u\i\+"
+
+syn region scFunctionArgs       start="|" end="|" contains=scSymbol,scString,scEllipsis,scNumber,scClass,scBuiltIn,scError,scReserved,scEnvVar,scMethodReceiver
+
 " Class method definition
 " syn match scClassMethodDef      "^\s*\*\zs\l\i*\ze\s*{"
 " Method definition
 " syn match scMethodDef           "^\s*\zs\l\i*\ze\s*{"
+
 " Operator method definition
 " syn match scMethodDef           "^\s*\zs[+-\*/=&|<>?@]\{1,3}\ze\s*{\_.*};"
 "
 " Block operator syntax and method definition
 syn match scMethodBlock          "\<\l\i*\ze\s*{"
 
+" TODO: match method call with dot on a preceding line (this doesn't work for
+" some reason)
+
+"syn match scFunctionCall        "\l\i\+\ze\_s*("
+" syn match scFunctionCall        "[^.]\=\zs\l\i*\ze\_s*\((\|{\)"
+syn match scFunctionCall        "\l\i*\ze\_s*\((\|{\)"
 
 " Class method call (receiver notation)
-syn match scMethodReceiver      "[^.]\=\.\zs\l\i\+\ze"
+syn match scMethodReceiver      "\_s*\.\_s*\zs\l\i*\ze"
 
 " Class method call (binary operator notation)
 "syn match scMethodBinaryOp      "\([^(]\s*\|[^,]\s+\)\zs\l\i*\ze:"
@@ -124,7 +135,7 @@ syn region  scComment	        start="/\*"  end="\*/"  contains=@Spell,scTodo
 hi def link scReserved          Keyword
 hi def link scControl           Keyword
 hi def link scError             Exception
-hi def link scGlobalVar         String
+hi def link scEnvVar            String
 hi def link scBuiltIn           Special
 " Special syntax elements (e.g. nil, partial application)
 hi def link scSpecial           Special
@@ -132,14 +143,17 @@ hi def link scSpecial           Special
 " Classes, methods, and functions
 hi def link scClass             Identifier
 hi def link scClassDef          Identifier
-hi def link scClassMethodDef    Function
-hi def link scMethodDef         Function
-hi def link scFunctionDef       Function
-hi def link scMethodBlock       Function
-hi def link scMethodReceiver    Function
-hi def link scMethodBinaryOp    Function
-hi def link scFunction          Function
-hi def link scBinaryOpAdverb    Function
+hi def link scClassMethodDef    Identifier
+" hi def link scClass             Type
+" hi def link scClassDef          Type
+" hi def link scClassMethodDef    Type
+" hi def link scMethodDef         Function
+" hi def link scFunctionDef       Function
+" hi def link scMethodBlock       Function
+hi def link scMethodReceiver    Clear
+hi def link scFunctionCall      Function
+" hi def link scMethodBinaryOp    Function
+" hi def link scBinaryOpAdverb    Function
 
 " Symbols
 hi def link scKeywordArg        String
@@ -156,6 +170,5 @@ hi def link scNumber            Number
 " Comments
 hi def link scComment           Comment
 hi def link scTodo	        Todo
-
 
 let b:current_syntax = "supercollider"

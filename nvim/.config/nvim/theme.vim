@@ -1,15 +1,17 @@
-" 256 color support is assumed (such as in gnome-terminal). As long as the
-" terminal supports 256 colors, this ensures colors look the same
-" regardless of the terminal color scheme.
-"
-" To disable (and use the terminal color scheme), uncomment this line and
-" comment the next:
-" set notermguicolors
-set termguicolors
+" Source base16 shell file (this needs to be done before setting a syntax
+" color scheme in order to set a vim theme different than the shell theme)
+if filereadable(expand("~/.vimrc_background"))
+  let base16colorspace=256
+  source ~/.vimrc_background
+endif
 
 " Set color scheme
-set background=dark
-silent! colorscheme base16-monokai
+" set background=light
+" silent! colorscheme pencil
+" set termguicolors
+" set background=dark
+"
+" silent! colorscheme base16-monokai
 " silent! colorscheme base16-materia
 " silent! colorscheme monokai
 
@@ -23,8 +25,9 @@ highlight! link SCNvimEval Visual
 
 " Airline settings
 " Enter :AirlineTheme and press <TAB> to see a list of all the themes
-" let g:airline_theme="base16_monokai"
 let g:airline_theme="base16_monokai"
+" let g:airline_theme="monochrome"
+let g:airline_theme="base16_vim"
 
 " Set to 1 to use fancy Powerline symbols (requires a font supporting
 " Powerline symbols)

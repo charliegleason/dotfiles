@@ -1,4 +1,3 @@
-
 syn clear
 
 " Reserved keywords
@@ -10,7 +9,7 @@ syn keyword     FaustReserved           process with case
 " Primitives
 " reference: https://github.com/grame-cncm/fausteditorweb/blob/master/src/monaco-faust/FaustLang.ts
 syn keyword     FaustPrimitives         mem prefix int float
-                                      \ rdtable rwtable select2 select3 ffunction fconstant fvariable 
+                                      \ rdtable rwtable select2 select3 ffunction fconstant fvariable
                                       \ button checkbox vslider hslider nentry
                                       \ vgroup hgroup tgroup
                                       \ vbargraph hbargraph attach
@@ -96,8 +95,9 @@ syn region      FaustComment	start="/\*"     end="\*/"       keepend extend cont
 syn match       FaustTodo       "TODO\|XXX"                     contained
 
 " String
-syn region      FaustString	start=+"+       skip=+\\\\\|\\"+        end=+"+         contains=FaustMetadata
+syn region      FaustString	start=+"+       skip=+\\\\\|\\"+        end=+"+         contains=FaustMetadata,FaustStringVar
 syn region      FaustMetadata   start="\["      end="\]"        contained
+syn match       FaustStringVar  "%\i\+"                         contained
 
 " Color definition
 hi link         FaustReserved                   Keyword
@@ -106,6 +106,7 @@ hi link         FaustComment                    Comment
 hi link         FaustTodo                       Todo
 hi link         FaustString                     String
 hi link         FaustMetadata                   SpecialChar
+hi link         FaustStringVar                  Special
 hi link         FaustNumber                     Number
 hi link         FaustConstant                   Type
 hi link         FaustOperator                   Special
