@@ -89,4 +89,3 @@ let c_no_curly_error = 1
 exec 'source ' . stdpath('config') . '/mappings.vim'
 exec 'source ' . stdpath('config') . '/netrw.vim'
 exec 'source ' . stdpath('config') . '/theme.vim'
-exec 'source ' . stdpath('config') . '/external.vim'

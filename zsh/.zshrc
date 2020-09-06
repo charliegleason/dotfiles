@@ -121,3 +121,4 @@ export EDITOR=/usr/bin/nvim
 export XDG_DATA_HOME="${HOME}/.local/share"
 # export TERM=st-256color
 # export TERM=st-256color
+export SC_PATH="${HOME}/git/supercollider"

@@ -54,7 +54,7 @@ Plug 'junegunn/limelight.vim'
 Plug 'junegunn/vim-peekaboo'
 
 " SuperCollider integration
-Plug 'davidgranstrom/scnvim'
+Plug 'davidgranstrom/scnvim', { 'do' : { -> scnvim#install() } }
 " TidalCycles integration
 Plug 'tidalcycles/vim-tidal'
 

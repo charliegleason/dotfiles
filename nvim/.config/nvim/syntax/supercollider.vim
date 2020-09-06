@@ -89,7 +89,7 @@ syn match scNumber              "\%(\%(\w\|[]})\"']\s*\)\@<!-\)\=\<0[bB][01]\+\%
 syn match scNumber	        "\%(\%(\w\|[]})\"']\s*\)\@<!-\)\=\<\%(0\|[1-9]\d*\%(_\d\+\)*\)\.\d\+\%(_\d\+\)*\>"      display
 syn match scNumber	        "\%(\%(\w\|[]})\"']\s*\)\@<!-\)\=\<\%(0\|[1-9]\d*\%(_\d\+\)*\)\%(\.\d\+\%(_\d\+\)*\)\=\%([eE][-+]\=\d\+\%(_\d\+\)*\)\>"	display
 " Match (2)pi as a number
-syn match scNumber              "\<2\=pi\>"
+syn match scNumber              "\<\d*pi\>"
 syn keyword scNumber            inf
 
 " Class name
@@ -124,6 +124,8 @@ syn match scMethodReceiver      "\_s*\.\_s*\zs\l\i*\ze"
 " Function/method keyword argument (such as 'doneAction:')
 " syn match scKeywordArg          "\((\_s*\|,\_s\+\)\zs\l\i*\ze:"
 
+" source generated syntax file
+runtime! syntax/classes.vim
 
 " Comments
 syn keyword scTodo              TODO FIXME XXX TBD NOTE contained
@@ -142,6 +144,7 @@ hi def link scSpecial           Special
 
 " Classes, methods, and functions
 hi def link scClass             Identifier
+hi def link scObject            Identifier
 hi def link scClassDef          Identifier
 hi def link scClassMethodDef    Identifier
 " hi def link scClass             Type

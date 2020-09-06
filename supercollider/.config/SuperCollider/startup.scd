@@ -7,7 +7,7 @@ CmdPeriod.freeRemote = true;
 ~synthDefsFile = Platform.userHomeDir +/+ ".synthdefs.scd";
 
 Server.default.reboot { // server options are only updated on reboot
-	Server.default.options.numWireBufs = 512;
+	Server.default.options.numWireBufs = 2048;
 	Server.default.options.numBuffers = 1024.pow(2);
 	Server.default.options.memSize = 1024.pow(2); // kB
 	Server.default.options.maxNodes = 32 * 1024;

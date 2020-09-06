@@ -1,26 +1,28 @@
 " Open a terminal in a new split
-function! HSplitTerminal()
+function! TerminalSplitH()
     new | terminal
 endfunction
 
-function! VSplitTerminal()
+function! TerminalSplitV()
     vnew | terminal
 endfunction
 
 " Open a terminal in a new tab
-function! TabTerminal()
+function! TerminalTabNew()
     tabnew | terminal
 endfunction
 
 " Remove trailing whitespace in the current buffer
 function! RemoveTrailingWhitespace()
+    let pos = getcurpos()
     silent! % substitute /\s\+$//g
+    call setpos('.', pos)
 endfunction
 
 " Commands for opening terminals
-command! HSplitTerminal :call HSplitTerminal()
-command! VSplitTerminal :call VSplitTerminal()
-command! TabTerminal :call TabTerminal()
+command! TerminalSplitH :call TerminalSplitH()
+command! TerminalSplitV :call TerminalSplitV()
+command! TerminalTabNew :call TerminalTabNew()
 
 command! RTrailing :call RemoveTrailingWhitespace()
 
@@ -62,18 +64,17 @@ nnoremap <leader>wM <C-w>_
 nnoremap <leader>wm <C-w>1_
 " Make all windows equal size ([w]indow [e]qual)
 nnoremap <leader>we <C-w>=
-" Move current window to new tab ([w]indow [t]ab)
-" (note: <leader>wt conflicts with vimwiki)
+" Move current window to new tab ([w]indow [T]ab) (note: <leader>wt conflicts with vimwiki)
 nnoremap <leader>wT <C-w>T
 " Close the current window ([w]indow [c]lose)
 nnoremap <leader>wc :quit<CR>
 
-" Open a new terminal in a horizontal split ([s]plit [t]erminal [h]orizontal)
-nnoremap <leader>tsh :HSplitTerminal<CR>
-" Open a new terminal in a vertical split ([s]plit [t]erminal [v]ertical)
-nnoremap <leader>tsv :VSplitTerminal<CR>
+" Open a new terminal in a horizontal split ([t]erminal [s]plit [h]orizontal)
+nnoremap <leader>tsh :TerminalSplitH<CR>
+" Open a new terminal in a vertical split ([t]erminal [s]plit [v]ertical)
+nnoremap <leader>tsv :TerminalSplitV<CR>
 " Open a new terminal in a new tab ([t]erminal [t]ab [n]ew)
-nnoremap <leader>ttn :TabTerminal<CR>
+nnoremap <leader>ttn :TerminalTabNew<CR>
 
 " Open a new tab ([t]ab [n]ew)
 nmap <leader>tn :tabnew<CR>
@@ -119,7 +120,7 @@ nnoremap <F7> :UndotreeToggle<CR>
 " F8 to open a Tagbar
 nnoremap <F8> :TagbarToggle<CR>
 " F12 to open netrw in a new vertical split on the left
-nnoremap <F12> :Lexplore<CR>
+" nnoremap <F12> :Lexplore<CR>
 
 " Automatically remove trailing whitespace on write/save
 augroup remove_trailing_whitespace
@@ -156,24 +157,32 @@ augroup goyo_limelight_auto
     autocmd User GoyoLeave nested call <SID>goyo_leave()
 augroup END
 
-" Set keybindings for SuperCollider files
+" create a custom status line for supercollider buffers
+function! s:set_sclang_statusline()
+    call airline#parts#define_function('sclang_status', 'scnvim#statusline#server_status')
+    let g:airline_section_y = airline#section#create_right(['', 'sclang_status'])
+endfunction
+
+" Set keybindings and statusline for SuperCollider files
 augroup supercollider
     autocmd! supercollider
+
+    autocmd FileType supercollider call <SID>set_sclang_statusline()
 
     autocmd FileType supercollider command! SCLive :Goyo | :SCNvimStart
     " TODO: intelligently toggle post window in case sclang is already running
     " TODO: toggle Live mode (i.e. make a Live! command, if possible)
 
     " [e]valuate and send (block)
-    autocmd FileType supercollider,help.supercollider nmap <buffer> <leader>e           <Plug>(scnvim-send-block)
+    autocmd FileType supercollider,help.supercollider nmap <buffer> <leader>e       <Plug>(scnvim-send-block)
     " [e]valuate and send (line)
-    autocmd FileType supercollider,help.supercollider nmap <buffer> <leader><C-e>       <Plug>(scnvim-send-line)
+    autocmd FileType supercollider,help.supercollider nmap <buffer> <leader>le      <Plug>(scnvim-send-line)
     " [e]valuate and send (selection)
-    autocmd FileType supercollider,help.supercollider vmap <buffer> <leader>e           <Plug>(scnvim-send-selection)
+    autocmd FileType supercollider,help.supercollider vmap <buffer> <leader>e       <Plug>(scnvim-send-selection)
     " Stop [E]valuation
-    autocmd FileType supercollider,help.supercollider nmap <buffer> <leader>E           <Plug>(scnvim-hard-stop)
+    autocmd FileType supercollider,help.supercollider nmap <buffer> <leader>E       <Plug>(scnvim-hard-stop)
     " [h]elp command shortcut
-    autocmd FileType supercollider,help.supercollider nmap <buffer> <leader>h           :SCNvimHelp<space>
+    autocmd FileType supercollider,help.supercollider nmap <buffer> <leader>h       :SCNvimHelp<space>
 
     " Toggle [p]ost window
     autocmd FileType supercollider,help.supercollider nmap <buffer> <localleader>p      <Plug>(scnvim-postwindow-toggle)
