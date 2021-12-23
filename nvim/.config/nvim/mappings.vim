@@ -1,3 +1,94 @@
+" Resize splits proportionally to the size of their buffer
+function! ResizeVerticalProportional()
+    " Don't show movements unless explicitly specified
+    set lazyredraw
+
+    let current_window = winnr()
+    let num_windows = winnr('$')
+    let buffer_sizes = []
+
+    " Calculate the total number of lines in the buffers on the current tab page.
+    let buffer_size_sum = 0
+    for i in range(1, num_windows)
+        let buffer_size = len(getbufline(winbufnr(i), 1, '$'))
+        let buffer_sizes = add(buffer_sizes, [buffer_size, i])
+        let buffer_size_sum += buffer_size
+    endfor
+
+    " Sort the buffer sizes from smallest to largest
+    let buffer_sizes = sort(buffer_sizes)
+
+    " Calculate the window sizes
+    let window_sizes = []
+    let min_window_size = 15
+
+    if buffer_size_sum > &lines
+        " If the total number of lines in all the buffers is greater than the
+        " window height, resize each split proportionally.
+        for i in range(1, num_windows)
+            let window_size = floor(&lines) * (floor(buffer_sizes[i - 1][0]) / floor(buffer_size_sum))
+            let window_size = max([float2nr(window_size), float2nr(min_window_size)])
+            let window_sizes = add(window_sizes, [window_size, buffer_sizes[i - 1][1]])
+        endfor
+    else
+        " Otherwise, resize each split to its length.
+        for i in range(1, num_windows)
+            let window_size = floor(buffer_sizes[i - 1][0])
+            let window_size = max([float2nr(window_size), float2nr(min_window_size)])
+            let window_sizes = add(window_sizes, [buffer_sizes[i - 1][1], window_size])
+        endfor
+    endif
+
+    let window_sizes = sort(window_sizes)
+
+    " Select topmost buffer
+    for i in range(1, current_window)
+        wincmd k
+    endfor
+
+    " Set window sizes
+    let remaining_height = &lines
+
+    for i in range(1, num_windows)
+        " Go to the (next smallest) window
+        let distance = winnr() - float2nr(window_sizes[i - 1][0])
+        for j in range(0, abs(distance))
+            if distance > 0
+                wincmd k
+            else
+                wincmd j
+            endif
+        endfor
+        let window_size = min([window_sizes[i - 1][1], remaining_height])
+        " Resize the window
+        exec 'resize' . ' ' . float2nr(window_size)
+        let remaining_height -= window_size
+    endfor
+
+    " Select original active window
+    for i in range(1, winnr() - current_window)
+        wincmd k
+    endfor
+
+    " Always redraw on movements
+    set nolazyredraw
+endfunction
+
+function! ResizeBufferLength()
+    let last_first_visible = line('w0')
+
+    exec "resize" . " " . line('$')
+
+    let current_first_visible = line('w0')
+    let distance = current_first_visible - last_first_visible
+
+    if distance > 0
+        exec "normal!" . " " . distance . "\<C-e>"
+    elseif distance < 0
+        exec "normal!" . " " . distance . "\<C-y>"
+    endif
+endfunction
+
 " Open a terminal in a new split
 function! TerminalSplitH()
     new | terminal
@@ -12,6 +103,11 @@ function! TerminalTabNew()
     tabnew | terminal
 endfunction
 
+function! MakeRun()
+    nnoremap :terminal make -j8 && make run
+    inoremap :terminal make -j8 && make run
+endfunction
+
 " Remove trailing whitespace in the current buffer
 function! RemoveTrailingWhitespace()
     let pos = getcurpos()
@@ -24,6 +120,8 @@ command! TerminalSplitH :call TerminalSplitH()
 command! TerminalSplitV :call TerminalSplitV()
 command! TerminalTabNew :call TerminalTabNew()
 
+command! ResizeBufferLength :call ResizeBufferLength()
+
 command! RTrailing :call RemoveTrailingWhitespace()
 
 " LanguageClient commands
@@ -33,9 +131,9 @@ command! Rename :call LanguageClient_textDocument_rename()
 command! ShowDoc :call LanguageClient_textDocument_hover()
 
 " Set <leader>
-let mapleader = ","
+let mapleader = "\\"
 " Set <localleader>
-let maplocalleader = "\\"
+let maplocalleader = ","
 
 " Use Alt-{h,j,k,l} to navigate splits in normal and terminal modes
 nnoremap <M-h> <C-w>h
@@ -68,6 +166,8 @@ nnoremap <leader>we <C-w>=
 nnoremap <leader>wT <C-w>T
 " Close the current window ([w]indow [c]lose)
 nnoremap <leader>wc :quit<CR>
+" Resize the curren window to the buffer length
+nnoremap <leader>wl :ResizeBufferLength<CR>
 
 " Open a new terminal in a horizontal split ([t]erminal [s]plit [h]orizontal)
 nnoremap <leader>tsh :TerminalSplitH<CR>
