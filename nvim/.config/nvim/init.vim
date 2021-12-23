@@ -1,9 +1,10 @@
-if empty(glob('~/.vim/autoload/plug.vim'))
-  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+if empty(glob('~/.local/share/nvim/site/autoload/plug.vim'))
+  silent !curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs
     \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
   autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
 
+" Read plugins config file
 exec 'source ' . stdpath('config') . '/plugins.vim'
 
 " Automatically reload open files when external changes are detected
@@ -12,7 +13,7 @@ set autoread
 " Use UTF-8
 set encoding=utf-8
 " 1 tab = 4 spaces
-set tabstop=8
+set tabstop=4
 set shiftwidth=4
 set expandtab
 
@@ -80,6 +81,8 @@ function! C_init()
 endf
 " Call C_init() when editing C-family source code
 au FileType c,cpp,cuda,objc :call C_init()
+
+autocmd FileType supercollider setlocal autoindent noexpandtab tabstop=4 shiftwidth=4
 
 " Don't indicate curly brackets within parentheses as an error
 " (e.g. when providing a lambda as an argument)
