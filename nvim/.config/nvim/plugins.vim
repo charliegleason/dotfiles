@@ -25,6 +25,8 @@ Plug 'kshenoy/vim-signature'
 Plug 'airblade/vim-gitgutter'
 " Undo tree visualizer
 Plug 'mbbill/undotree'
+" Proportional window sizing
+Plug 'drzel/vim-in-proportion'
 
 " Code completion engine
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
@@ -41,7 +43,7 @@ Plug 'SirVer/ultisnips'
 " Universal-ctags based navigation
 Plug 'majutsushi/tagbar'
 " Wiki
-Plug 'vimwiki/vimwiki'
+" Plug 'vimwiki/vimwiki'
 " Markdown
 Plug 'plasticboy/vim-markdown'
 " Fuzzy search
@@ -52,6 +54,8 @@ Plug 'junegunn/goyo.vim'
 Plug 'junegunn/limelight.vim'
 " Display contents of registers
 Plug 'junegunn/vim-peekaboo'
+" ANTLR syntax highlighting
+Plug 'dylon/vim-antlr'
 
 " SuperCollider integration
 Plug 'davidgranstrom/scnvim', { 'do' : { -> scnvim#install() } }
@@ -90,6 +94,7 @@ let g:LanguageClient_serverCommands = {
             \ 'c': ['clangd', '--header-insertion=never', '--limit-results=32'],
             \ 'cpp': ['clangd', '--header-insertion=never', '--limit-results=32'],
             \ 'cuda': ['clangd', '--header-insertion=never', '--limit-results=32'],
+            \ 'java': ['jdtls']
             \ }
 let g:LanguageClient_diagnosticsDisplay = {
             \   1: {
